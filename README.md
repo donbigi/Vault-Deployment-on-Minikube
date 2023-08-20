@@ -152,9 +152,16 @@ vault kv get secret/webapp/config
 ```
 
 Enable the Kubernetes authentication method
+you can either navigate to access > authentication methods > Enable new Method > kubernetes > path: kubernetes 
+or go back to ternimal and run
 ```bash
+# (optional) if you are not in vault
+#kubectl exec --stdin=true --tty=true vault-0 -n vault -- /bin/sh
+
+# enables kubernetes vault auth
 vault auth enable kubernetes
 ```
+
 Configure the Kubernetes authentication method to use the location of the Kubernetes API.
 ```bash
 vault write auth/kubernetes/config \
@@ -245,14 +252,9 @@ In another terminal, port forward all requests made to http://localhost:8080 to 
 ```bash
 kubectl port-forward \
  POD_OF_WEBAPP_DEPLOYMENT \
- 8080:8080 -n webapps
+ 8080:80 -n webapps
 ```
 
-So finally our sample web application running on port 8080 in the webapp pod is able to ,
-
-authenticates with the Kubernetes service account token
-receives a Vault token with the read capability at the ```secret/data/webapp/config``` path
-retrieves the secrets from ```secret/data/webapp/config``` path
-displays the secrets 
+So finally our sample web application running on port 8080 in the webapp pod is able to authenticate with the Kubernetes service account token, receives a Vault token with the read capability at the ```secret/data/webapp/config``` path, retrieves the secrets from ```secret/data/webapp/config``` path and displays the secrets 
 
 Thank you for reading
