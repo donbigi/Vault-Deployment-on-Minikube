@@ -113,43 +113,44 @@ cat cluster-keys.text | grep -i token
 
 lets use the UI to create secret, roles auth and policy.
 
-to create policy, navigate to secret engine and enable new engine
+To create policy, navigate to secret engine and enable new engine
 ![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-1.png)
 
-enable secret engine generic kv
+Enable secret engine generic kv
 ![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-2.png)
 
-set path to secret
+Set path to secret
 ![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-3.png)
 
-create secret 
+Create secret 
 ![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-4.png)
 
-path to the secret should be webapp/config, the key value pair can be anything you want to store securely, but for this example we will use username and password
+The Path to the secret should be webapp/config, the key value pair can be anything you want to store securely, but for this example we will use username and password
 ![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-5.png)
 
+after creating secret with secret engine generic kv, navigate to policies
+![naivgate to policy](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/create-policy-1.png)
 
+and create policy named ```webapp``` that enables the ```read``` capability for secrets at path ```secret/data/webapp/config```
+![naivgate to policy](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/create-policy-2.png)
 
-Write out the policy named ```webapp``` that enables the ```read``` capability for secrets at path ```secret/data/webapp/config```
-
+Copy policy:
 ```bash
-vault policy write webapp - <<EOF path "secret/data/webapp/config" {
+path "secret/data/webapp/config" {
   capabilities = ["read", "create", "update", "delete"]
-} EOF
-```
-This policy will let us create secret.
-
-Create a secret at path ```secret/webapp/config``` with a ```username``` and ```password```.
-
-```bash
-vault kv put secret/webapp/config username="uche" password="password_uche"
+}
 ```
 
 Verify that the secret is defined at the path ```secret/webapp/config```
 
 ```bash
+# login to the vault on termnial
+kubectl exec --stdin=true --tty=true vault-0 -n vault -- /bin/sh
+vault login
+# check if secret exits
 vault kv get secret/webapp/config
 ```
+
 Enable the Kubernetes authentication method
 ```bash
 vault auth enable kubernetes
@@ -165,10 +166,18 @@ Create a Kubernetes authentication role, named webapp, that connects the Kuberne
 Before we do that, lets first create a service account
 open a second terminal and run:
 ```bash
+kubectl create ns webapps
 kubectl create sa webapp-service-account -n webapps
 ```
+you can either navigate to access > authentication methods > kubernetes > create role.
+create role with spec:
+- name: webapp
+- Bound service account names: webapp-service-account
+- Bound service account namespaces: webapps
+- Generated Token's Policies: webapp
+- Generated Token's Initial TTL: 24h
 
-Go back to the other ternimal window and run
+Or you can go back to the other ternimal window and run
 ```bash
 vault write auth/kubernetes/role/webapp \
         bound_service_account_names=webapp-service-account \
