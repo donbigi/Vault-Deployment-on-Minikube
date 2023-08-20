@@ -98,7 +98,7 @@ kubectl port-forward service/vault -n vault 8200:8200
 ```
 use http://localhost:8200 in browser to access vault and enter root token
 
-you can also use command line too to create secret, roles auth and policy.
+you can also use command line too. to use the commandline to login, run:
 
 ```bash
 # Start an interactive shell session on the vault-0 pod
@@ -110,6 +110,25 @@ use your token saved earlier to enter
 # open another terminal and run the code below to extract token
 cat cluster-keys.text | grep -i token
 ```
+
+lets use the UI to create secret, roles auth and policy.
+
+to create policy, navigate to secret engine and enable new engine
+![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-1.png)
+
+enable secret engine generic kv
+![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-2.png)
+
+set path to secret
+![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-3.png)
+
+create secret 
+![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-4.png)
+
+path to the secret should be webapp/config, the key value pair can be anything you want to store securely, but for this example we will use username and password
+![naivgate to secret engine](https://github.com/donbigi/Vault-Deployment-on-Minikube/blob/main/pic/secret-5.png)
+
+
 
 Write out the policy named ```webapp``` that enables the ```read``` capability for secrets at path ```secret/data/webapp/config```
 
