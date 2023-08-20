@@ -64,7 +64,7 @@ VAULT_UNSEAL_KEY_3=KEY_3
 ```
 Unseal Vault running on the vault-0 pod
 ```bash
-kubectl exec it vault-0 -n vault -- sh
+kubectl exec -it vault-0 -n vault -- sh
 
 vault operator unseal
 $VAULT_UNSEAL_KEY_1
