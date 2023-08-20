@@ -64,16 +64,10 @@ VAULT_UNSEAL_KEY_3=KEY_3
 ```
 Unseal Vault running on the vault-0 pod
 ```bash
-kubectl exec -it vault-0 -n vault -- sh
+kubectl exec -it vault-0 -n vault -- vault operator unseal $VAULT_UNSEAL_KEY_1
+kubectl exec -it vault-0 -n vault -- vault operator unseal $VAULT_UNSEAL_KEY_2
+kubectl exec -it vault-0 -n vault -- vault operator unseal $VAULT_UNSEAL_KEY_3
 
-vault operator unseal
-$VAULT_UNSEAL_KEY_1
-
-vault operator unseal
-$VAULT_UNSEAL_KEY_2
-
-vault operator unseal
-$VAULT_UNSEAL_KEY_3
 ```
 
 Join the vault-1 and vault-2pods to the Raft cluster
@@ -85,29 +79,15 @@ kubectl exec -it vault-2 -n vault -- vault operator raft join http://vault-0.vau
 Use the unseal key from above to unseal ```vault-1``` and ```vault-2```
 
 ```bash
-kubectl exec -it vault-1 -n vault -- sh
-
-vault operator unseal
-$VAULT_UNSEAL_KEY_1
-
-vault operator unseal
-$VAULT_UNSEAL_KEY_2
-
-vault operator unseal
-$VAULT_UNSEAL_KEY_3
+kubectl exec -it vault-1 -n vault -- vault operator unseal $VAULT_UNSEAL_KEY_1
+kubectl exec -it vault-1 -n vault -- vault operator unseal $VAULT_UNSEAL_KEY_2
+kubectl exec -it vault-1 -n vault -- vault operator unseal $VAULT_UNSEAL_KEY_3
 ```
 
 ```bash
-kubectl exec -it vault-2 -n vault -- sh
-
-vault operator unseal
-$VAULT_UNSEAL_KEY_1
-
-vault operator unseal
-$VAULT_UNSEAL_KEY_2
-
-vault operator unseal
-$VAULT_UNSEAL_KEY_3
+kubectl exec -it vault-2 -n vault -- vault operator unseal $VAULT_UNSEAL_KEY_1
+kubectl exec -it vault-2 -n vault -- vault operator unseal $VAULT_UNSEAL_KEY_2
+kubectl exec -it vault-2 -n vault -- vault operator unseal $VAULT_UNSEAL_KEY_3
 ```
 After this unsealing process all vault pods are now in running (1/1 ready ) state
 
