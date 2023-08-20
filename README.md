@@ -60,7 +60,7 @@ Create a variables named ```VAULT_UNSEAL_KEY_1```, ```VAULT_UNSEAL_KEY_2```, ```
 ```bash
 VAULT_UNSEAL_KEY_1=KEY_1
 VAULT_UNSEAL_KEY_2=KEY_2
-VAULT_UNSEAL_KEY_2=KEY_3
+VAULT_UNSEAL_KEY_3=KEY_3
 ```
 Unseal Vault running on the vault-0 pod
 ```bash
