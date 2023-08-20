@@ -64,7 +64,7 @@ VAULT_UNSEAL_KEY_3=KEY_3
 ```
 Unseal Vault running on the vault-0 pod
 ```bash
-kubectl exec vault-0 -n vault -- sh
+kubectl exec it vault-0 -n vault -- sh
 
 vault operator unseal
 $VAULT_UNSEAL_KEY_1
@@ -78,14 +78,14 @@ $VAULT_UNSEAL_KEY_3
 
 Join the vault-1 and vault-2pods to the Raft cluster
 ```bash
-kubectl exec -ti vault-1 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
-kubectl exec -ti vault-2 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
+kubectl exec -it vault-1 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
+kubectl exec -it vault-2 -n vault -- vault operator raft join http://vault-0.vault-internal:8200
 ```
 
 Use the unseal key from above to unseal ```vault-1``` and ```vault-2```
 
 ```bash
-kubectl exec vault-1 -n vault -- sh
+kubectl exec -it vault-1 -n vault -- sh
 
 vault operator unseal
 $VAULT_UNSEAL_KEY_1
@@ -98,7 +98,7 @@ $VAULT_UNSEAL_KEY_3
 ```
 
 ```bash
-kubectl exec vault-2 -n vault -- sh
+kubectl exec -it vault-2 -n vault -- sh
 
 vault operator unseal
 $VAULT_UNSEAL_KEY_1
