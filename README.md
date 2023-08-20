@@ -37,10 +37,10 @@ helm repo add hashicorp https://helm.releases.hashicorp.com
 cat > helm-vault-raft-values.yml <<EOF
 server:
   affinity: ""
-   ha:
+  ha:
     enabled: true
-      raft: 
-        enabled: true
+    raft: 
+      enabled: true
 EOF
 
 # Create namespace vault and installs vaults there
